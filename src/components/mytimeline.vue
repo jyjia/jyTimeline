@@ -61,7 +61,7 @@
           this.isPopupVisible = true
         }
         if(video){
-          //this.videoPath = video;  //json里面的视频加载不出来 提示网络错误。
+          //this.videoPath = video;
           this.videoPath = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
           this.isPopVideoVisible = true
         }
