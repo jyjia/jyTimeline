@@ -43,11 +43,8 @@
         isPopVideoVisible: false,
         detailInfo: null,
         videoPath: null,
-        contentStyle: 1
+        contentStyle: -1
       }
-    },
-    created() {
-
     },
     mounted(){
      this.$nextTick(function () {  //监听滚动事件
@@ -93,8 +90,10 @@
       },
       styleScroll() {  //监听滚动条
         //先删除上一个的样式
-        this.$refs.content[this.contentStyle].classList.remove("enLarge");
-        this.$refs.content[this.contentStyle].parentNode.parentNode.children[1].children[0].classList.remove("iconShape");
+        if(this.contentStyle !== -1){
+          this.$refs.content[this.contentStyle].classList.remove("enLarge");
+          this.$refs.content[this.contentStyle].parentNode.parentNode.children[1].children[0].classList.remove("iconShape");
+        }
         let high = this.getClientHeight()/2;
         let min=10000000,len,num=0;
         for(let i=0;i<this.$refs.content.length;i++){
@@ -113,6 +112,11 @@
         //获取对应的圆点
         this.$refs.content[num].parentNode.parentNode.children[1].children[0].classList.add("iconShape");
       //  console.log(this.$refs.content[num].parentNode.parentNode.children[1].firstChild)
+      }
+    },
+    watch: {
+      contentStyle() {
+        console.log(this.contentStyle);
       }
     },
     destroyed () {

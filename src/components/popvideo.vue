@@ -9,7 +9,7 @@
                          :options="playerOptions"
           ></video-player>
         </section>-->
-        <video :src=videoPath controls="controls"></video>
+        <video :src=videoPath controls="controls" autoplay="autoplay"></video>
         <footer class="popup-footer">
           <slot name="footer">
             <button

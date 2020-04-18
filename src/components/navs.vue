@@ -18,22 +18,22 @@
         navsList: [
           {
             id: 0,
-            class: "check1",
+            class: "check0",
             text: '政府行动',
           },
           {
             id: 1,
-            class: "check2",
+            class: "check1",
             text: '境内疫情',
           },
           {
             id: 2,
-            class: "check3",
+            class: "check2",
             text: '行业战疫',
           },
           {
             id: 3,
-            class: "check4",
+            class: "check3",
             text: '境外疫情',
           },
         ],
@@ -59,10 +59,12 @@
       },
       clickCheck(id,text) {
         let el = this.$refs.nav[id];
-        if(this.isCheck[id]){  //选中->没选中
+        if(this.isCheck[id]){
+          //选中->没选中
           this.cancelCheck(el,text);
           this.isCheck[id] = false;
-        }else{  //没选中->选中
+        }else{
+          //没选中->选中
           this.checked(el,text);
           this.isCheck[id] = true;
         }
@@ -95,17 +97,29 @@
     vertical-align: bottom;
     margin-right: 10px;
   }
-  .navs .check.check1:before {
+  .navs .check.check0:before {
     background: #f77979;
   }
-  .navs .check.check2:before {
+  .navs .check.check1:before {
     background: #3c8ed0;
   }
-  .navs .check.check3:before {
+  .navs .check.check2:before {
     background: #f77f46;
   }
-  .navs .check.check4:before {
+  .navs .check.check3:before {
     background: #8f76c1;
+  }
+  .check.check0{
+    color: #f77979;
+  }
+  .check.check1{
+    color: #3c8ed0;
+  }
+  .check.check2{
+    color: #f77f46;
+  }
+  .check.check3{
+    color: #8f76c1;
   }
   .disabled {
     opacity: .2;

@@ -44,7 +44,7 @@ export default  {
       info: [],
       showInfo: [],
       items: [],
-      check: this.checkInfo,
+      check: ['政府行动','境内疫情','行业战疫','境外疫情'],
       page: 1,
       status: 1,
       isFixed: false
@@ -73,8 +73,43 @@ export default  {
           console.log(error);
         });
     },
+    editInfo(){  //处理数据
+      for(let i=0;i<this.info[this.page-1].length;i++){
+        //不同类型不同添加不同颜色的类
+        if(this.info[this.page-1][i].category === config[0].category ){
+          this.info[this.page-1][i].typeColor = config[0].typeColor;
+        }else if(this.info[this.page-1][i].category === config[1].category){
+          this.info[this.page-1][i].typeColor = config[1].typeColor;
+        }else if(this.info[this.page-1][i].category === config[2].category){
+          this.info[this.page-1][i].typeColor = config[2].typeColor;
+        }else if(this.info[this.page-1][i].category === config[3].category ){
+          this.info[this.page-1][i].typeColor = config[3].typeColor;
+        }
+        //修改时间格式
+        this.info[this.page-1][i].time_point = this.info[this.page-1][i].time_point.split(' ')[0];
+
+        //判断是否是重点数据
+        if(this.info[this.page-1][i].important === "0"){
+          this.info[this.page-1][i].isImport = false;
+        }else{
+          this.info[this.page-1][i].isImport = true;
+        }
+        //判断是否是video
+        if(this.info[this.page-1][i].video){
+          this.info[this.page-1][i].isVideo = true;
+        }else{
+          this.info[this.page-1][i].isVideo = false;
+        }
+      }
+
+      this.showInfo = JSON.parse(JSON.stringify(this.info));
+      this.editCheck();
+    },
     checkInfo(data){   //根据选项筛选数据
       this.check = data;
+      this.editCheck();
+    },
+    editCheck() {
       this.showInfo = JSON.parse(JSON.stringify(this.info));
       //console.log(this.showInfo);
       for(let m=0;m<this.showInfo.length;m++){
@@ -95,46 +130,6 @@ export default  {
           i++;
         }
       }
-      this.reDupTime();
-    },
-    editInfo(){  //处理数据
-      for(let i=0;i<this.info[this.page-1].length;i++){
-        //不同类型不同添加不同颜色的类
-        if(this.info[this.page-1][i].category === "境内疫情" ){
-          this.info[this.page-1][i].typeColor = "inEpidemicColor";
-          this.info[this.page-1][i].symbol = "moon";
-          this.info[this.page-1][i].iconColor = "inEpIconColor";
-        }else if(this.info[this.page-1][i].category === "境外疫情" ){
-          this.info[this.page-1][i].typeColor = "outEpidemicColor";
-          this.info[this.page-1][i].symbol = "leaf";
-          this.info[this.page-1][i].iconColor = "outEpIconColor";
-        }else if(this.info[this.page-1][i].category === "政府行动" ){
-          this.info[this.page-1][i].typeColor = "actionColor";
-          this.info[this.page-1][i].symbol = "clound";
-          this.info[this.page-1][i].iconColor = "actionIconColor";
-        }else if(this.info[this.page-1][i].category === "行业战疫" ){
-          this.info[this.page-1][i].typeColor = "industryColor";
-          this.info[this.page-1][i].symbol = "flash";
-          this.info[this.page-1][i].iconColor = "industryIconColor";
-        }
-        //修改时间格式
-        this.info[this.page-1][i].time_point = this.info[this.page-1][i].time_point.split(' ')[0];
-
-        //判断是否是重点数据
-        if(this.info[this.page-1][i].important === "0"){
-          this.info[this.page-1][i].isImport = false;
-        }else{
-          this.info[this.page-1][i].isImport = true;
-        }
-        //判断是否是video
-        if(this.info[this.page-1][i].video){
-          this.info[this.page-1][i].isVideo = true;
-        }else{
-          this.info[this.page-1][i].isVideo = false;
-        }
-      }
-
-      this.showInfo = JSON.parse(JSON.stringify(this.info));
       this.reDupTime();
     },
     reDupTime() {   //处理数据，生成新的格式的数据
@@ -198,7 +193,7 @@ export default  {
     onScroll () {
       //加载数据
       if (this.getScrollHeight() - this.getClientHeight() - this.getScrollTop() <= 20) {
-        if (this.status === 1 && this.page<7) {
+        if (this.status === 1 && this.page<6) {
           this.status = 0;
           this.page = this.page + 1 ;
           this.getInfo();
