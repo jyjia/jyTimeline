@@ -61,8 +61,8 @@
           this.isPopupVisible = true
         }
         if(video){
-          //this.videoPath = video;
-          this.videoPath = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
+          this.videoPath = video;
+          //this.videoPath = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
           this.isPopVideoVisible = true
         }
       },
@@ -109,7 +109,7 @@
         //添加样式
         this.contentStyle = num;
         this.$refs.content[num].classList.add("enLarge");
-        //console.log("获取滚动条当前的位置  "+num)
+
         //获取对应的圆点
         this.$refs.content[num].parentNode.parentNode.children[1].children[0].classList.add("iconShape");
       //  console.log(this.$refs.content[num].parentNode.parentNode.children[1].firstChild)
@@ -203,22 +203,17 @@
 
 
   .inEpidemicColor {
-    background: #f77f46;
+    background: #3c8ed0;
   }
   .outEpidemicColor {
-    background: #3c8ed0;
+    background: #8f76c1;
     /*lightcoral*/
   }
   .actionColor {
     background:  #f77979;;
   }
   .industryColor {
-    background:  #8f76c1;
+    background:  #f77f46;
 
   }
-  .color {
-    background: #783433;
-    background: lightcoral;
-  }
-
 </style>

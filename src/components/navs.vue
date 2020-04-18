@@ -1,65 +1,113 @@
 <template>
-  <el-checkbox-group v-model="checkList">
-    <el-checkbox class="item1" label="政府行动"></el-checkbox>
-    <el-checkbox class="item2" label="境内疫情"></el-checkbox>
-    <el-checkbox class="item3" label="行业战疫"></el-checkbox>
-    <el-checkbox class="item4" label="境外疫情"></el-checkbox>
-  </el-checkbox-group>
+  <ul class="navs">
+    <li>点击筛选 ：</li>
+    <li v-for="item in navsList" class="check"
+        :class="item.class"
+        ref="nav"
+        @click="clickCheck(item.id,item.text)">
+      {{item.text}}</li>
+  </ul>
 </template>
 
 <script>
-    export default {
-      data() {
-        return {
-          checkList: ['政府行动','境内疫情','行业战疫','境外疫情']
-        };
-      },
-      watch:{
-        checkList(){
-          this.$emit('checkInfo',this.checkList);
-        }
-
+  export default {
+    name: "navs",
+    data() {
+      return {
+        isCheck: [true,true,true,true],
+        navsList: [
+          {
+            id: 0,
+            class: "check1",
+            text: '政府行动',
+          },
+          {
+            id: 1,
+            class: "check2",
+            text: '境内疫情',
+          },
+          {
+            id: 2,
+            class: "check3",
+            text: '行业战疫',
+          },
+          {
+            id: 3,
+            class: "check4",
+            text: '境外疫情',
+          },
+        ],
+        checkList: ['政府行动','境内疫情','行业战疫','境外疫情']
       }
-    };
+    },
+    watch:{
+      checkList(){
+        this.$emit('checkInfo',this.checkList);
+      }
+    },
+    methods: {
+      cancelCheck(el,text) {
+        let index = this.checkList.indexOf(text);
+        if (index > -1) {
+          this.checkList.splice(index, 1);
+          el.classList.add("disabled");   //添加不显示样式
+        }
+      },
+      checked(el,text) {
+        this.checkList.push(text);
+        el.classList.remove("disabled");  //删除不显示样式
+      },
+      clickCheck(id,text) {
+        let el = this.$refs.nav[id];
+        if(this.isCheck[id]){  //选中->没选中
+          this.cancelCheck(el,text);
+          this.isCheck[id] = false;
+        }else{  //没选中->选中
+          this.checked(el,text);
+          this.isCheck[id] = true;
+        }
+      }
+    }
+  }
 </script>
 
-<style>
-  /*选中后框的背景和边框*/
-  .item1 .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
-    /*background-color:#7fa037;*/
-    background-color: 	#f77979;
-    border-color: #f77979;
-  }
-  .item2 .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
-    background-color: #f77f46;
-    border-color:#f77f46;
-  }
-  .item3 .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
-    background-color: #8f76c1;
-    border-color:#8f76c1;
-  }
-  .item4 .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
-    background-color:#3c8ed0;
-    border-color:#3c8ed0;
-  }
-  .el-checkbox__input.is-checked + .el-checkbox__label { /*选中后label*/
+<style scoped>
+  .navs{
+    list-style: none;
+    margin:0;
+    padding:0;
     color: azure;
   }
-  .el-checkbox.is-bordered.is-checked{
-    border-color: #909399;
+  .navs li {
+    margin: 0 10px;
+    display:inline-block;
   }
-
-  /*没选中时复选框的边*/
-  .item1  .el-checkbox__input.is-focus .el-checkbox__inner{
-    border-color: 	#f77979;
+  .navs .check {
+    transition: opacity .3s;
   }
-  .item2  .el-checkbox__input.is-focus .el-checkbox__inner{
-    border-color: #f77f46;
+  .navs .check:before {
+    content: "";
+    width: 17px;
+    height: 17px;
+    display: inline-block;
+    border-radius: 10px;
+    background: #fff;
+    vertical-align: bottom;
+    margin-right: 10px;
   }
-  .item3  .el-checkbox__input.is-focus .el-checkbox__inner{
-    border-color: #8f76c1;
+  .navs .check.check1:before {
+    background: #f77979;
   }
-  .item4  .el-checkbox__input.is-focus .el-checkbox__inner{
-    border-color: #3c8ed0;
+  .navs .check.check2:before {
+    background: #3c8ed0;
+  }
+  .navs .check.check3:before {
+    background: #f77f46;
+  }
+  .navs .check.check4:before {
+    background: #8f76c1;
+  }
+  .disabled {
+    opacity: .2;
   }
 </style>

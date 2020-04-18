@@ -44,7 +44,7 @@ export default  {
       info: [],
       showInfo: [],
       items: [],
-      check: ['政府行动','境内疫情','行业战役','境外疫情'],
+      check: this.checkInfo,
       page: 1,
       status: 1,
       isFixed: false
