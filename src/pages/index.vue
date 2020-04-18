@@ -14,8 +14,13 @@
     <div id="navs" :class="{fixedBar: isFixed}">
       <my-navs @checkInfo="checkInfo"></my-navs>
     </div>
+
     <div id="timelineBody">
-      <my-time-line :items="items">></my-time-line>
+      <my-order @isReverse="reverseItems"></my-order>
+      <div v-for="item in timelineInfo">
+        <div class="yearType">{{item.year}} 年</div>
+        <my-time-line :items="item.data">></my-time-line>
+      </div>
       <div >
         <a href="javascript:;">
           <img id="moreInfo" src="../../static/images/moreinfo.png">
@@ -34,20 +39,24 @@
 import axios from 'axios'
 import navs from '../components/navs'
 import MyTimeLine from '../components/mytimeline'
+import MyOrder from '../components/order'
 export default  {
   components:{
     MyNavs: navs,
-    MyTimeLine
+    MyTimeLine,
+    MyOrder
   },
   data () {
     return {
       info: [],
       showInfo: [],
       items: [],
+      timelineInfo: [],
       check: ['政府行动','境内疫情','行业战疫','境外疫情'],
       page: 1,
       status: 1,
-      isFixed: false
+      isFixed: false,
+      isRev: false
     }
   },
   created(){
@@ -62,6 +71,7 @@ export default  {
   methods: {
     getInfo() {   //获取数据
       //拼接请求数据
+      console.log(this.page);
       let infoUrl = "http://localhost:8080/static/epidemicInfo"+this.page+".json"
       axios
         .get(infoUrl)
@@ -74,31 +84,41 @@ export default  {
         });
     },
     editInfo(){  //处理数据
-      for(let i=0;i<this.info[this.page-1].length;i++){
-        //不同类型不同添加不同颜色的类
-        if(this.info[this.page-1][i].category === config[0].category ){
-          this.info[this.page-1][i].typeColor = config[0].typeColor;
-        }else if(this.info[this.page-1][i].category === config[1].category){
-          this.info[this.page-1][i].typeColor = config[1].typeColor;
-        }else if(this.info[this.page-1][i].category === config[2].category){
-          this.info[this.page-1][i].typeColor = config[2].typeColor;
-        }else if(this.info[this.page-1][i].category === config[3].category ){
-          this.info[this.page-1][i].typeColor = config[3].typeColor;
+      let nowPage ;
+      if(this.isRev){ //反序
+        nowPage = 6-this.page;
+        this.info[nowPage].reverse();
+       /* for(let i=0;i<this.info[nowPage].length;i++){
+          this.info[nowPage][i].reverse();
+        }*/
+      }else{   //正序
+        nowPage = this.page-1;
+      }
+      for(let i=0;i<this.info[nowPage].length;i++){
+        //不同类型，颜色显示不同
+        if(this.info[nowPage][i].category === config[0].category ){
+          this.info[nowPage][i].typeColor = config[0].typeColor;
+        }else if(this.info[nowPage][i].category === config[1].category){
+          this.info[nowPage][i].typeColor = config[1].typeColor;
+        }else if(this.info[nowPage][i].category === config[2].category){
+          this.info[nowPage][i].typeColor = config[2].typeColor;
+        }else if(this.info[nowPage][i].category === config[3].category ){
+          this.info[nowPage][i].typeColor = config[3].typeColor;
         }
         //修改时间格式
-        this.info[this.page-1][i].time_point = this.info[this.page-1][i].time_point.split(' ')[0];
+        this.info[nowPage][i].time_point = this.info[nowPage][i].time_point.split(' ')[0];
 
         //判断是否是重点数据
-        if(this.info[this.page-1][i].important === "0"){
-          this.info[this.page-1][i].isImport = false;
+        if(this.info[nowPage][i].important === "0"){
+          this.info[nowPage][i].isImport = false;
         }else{
-          this.info[this.page-1][i].isImport = true;
+          this.info[nowPage][i].isImport = true;
         }
         //判断是否是video
-        if(this.info[this.page-1][i].video){
-          this.info[this.page-1][i].isVideo = true;
+        if(this.info[nowPage][i].video){
+          this.info[nowPage][i].isVideo = true;
         }else{
-          this.info[this.page-1][i].isVideo = false;
+          this.info[nowPage][i].isVideo = false;
         }
       }
 
@@ -132,21 +152,24 @@ export default  {
       }
       this.reDupTime();
     },
-    reDupTime() {   //处理数据，生成新的格式的数据
+    reDupTime() {   //处理数据，生成新格式的数据
       this.items = [];
+      this.timelineInfo = [];
       let dateText=this.showInfo[0][0].time_point;  //时间
       let detailText = [];  //详细内容
       detailText[0]=this.showInfo[0][0];
-
+      let year = this.showInfo[0][0].time_point.split('-')[0];
+      let num=1;
       for(let m=0; m<this.showInfo.length;m++){
-        let num=1;
         for(let i=1;i<this.showInfo[m].length;i++){
+          //根据日期处理数据，相同日期的放到一起
           if(this.showInfo[m][i].time_point === this.showInfo[m][i-1].time_point){
             detailText[num] = this.showInfo[m][i];
             num++;
           }else{
             this.items.push({
               date: dateText,
+              time: dateText.split('-')[1]+"-"+dateText.split('-')[2],
               detail: detailText
             });
             dateText=this.showInfo[m][i].time_point;
@@ -155,14 +178,65 @@ export default  {
             detailText[num]=this.showInfo[m][i];
           }
           if(i === this.showInfo[m].length-1){
-            this.items.push({
-              date: dateText,
-              detail: detailText
-            });
+            //最后的时间可能与下组数据的开始时间相同
+            if(m < this.showInfo.length-1){
+              if(dateText !== this.showInfo[m+1][0].time_point){
+                this.items.push({
+                  date: dateText,
+                  time: dateText.split('-')[1]+"-"+dateText.split('-')[2],
+                  detail: detailText
+                });
+                dateText=this.showInfo[m+1][0].time_point;
+                num=0;
+                detailText = [];
+                detailText[num]=this.showInfo[m+1][0];
+              }
+            }else{
+              this.items.push({
+                date: dateText,
+                time: dateText.split('-')[1]+"-"+dateText.split('-')[2],
+                detail: detailText
+              });
+            }
           }
+
+          //根据年份处理
+          let tempYear = this.showInfo[m][i].time_point.split('-')[0];
+          if(year !== tempYear){
+              this.timelineInfo.push({
+                year: year,
+                data: this.items
+              });
+            year = this.showInfo[m][i].time_point.split('-')[0];
+            this.items = [];
+          }
+        }
+
+        if(m === this.showInfo.length-1) {
+          this.timelineInfo.push({
+            year: year,
+            data: this.items
+          })
         }
       }
       this.status = 1;
+    },
+    //反转
+    reverseItems(data) {
+      /*for(let i=0;i<this.info.length;i++){
+        this.info[i].reverse();
+      }*/
+      if(data){ //反序展示
+        this.page = 6;
+        this.isRev = true;
+        this.info = [];
+        this.getInfo();
+      }else{  //正序展示
+        this.page = 1;
+        this.isRev = false;
+        this.info = [];
+        this.getInfo();
+      }
     },
     // 获取滚动条当前的位置
     getScrollTop () {
@@ -193,10 +267,15 @@ export default  {
     onScroll () {
       //加载数据
       if (this.getScrollHeight() - this.getClientHeight() - this.getScrollTop() <= 20) {
-        if (this.status === 1 && this.page<6) {
+        if (this.status === 1) {
           this.status = 0;
-          this.page = this.page + 1 ;
-          this.getInfo();
+          if(this.isRev && this.page>0){  //倒序
+            this.page = this.page - 1 ;
+            this.getInfo();
+          }else if(this.page<6) {  //正序
+            this.page = this.page + 1 ;
+            this.getInfo();
+          }
         }
       }
       //固定筛选栏
@@ -258,6 +337,18 @@ export default  {
     height: 18px;
     margin-top: 2px;
   }
+  .yearType {
+    font-size: 18px;
+    color: azure;
+    border: 2px solid white;
+    background: #151d31;
+    width: 80px;
+    height: 30px;
+    border-radius: 5px;
+    margin-left: 45px;
+    text-align: center;
+  }
+
   #moreInfo {
     width: 350px;
     padding-top: 50px;

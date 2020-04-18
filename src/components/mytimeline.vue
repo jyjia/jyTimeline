@@ -2,7 +2,7 @@
   <div class="mytimeline">
     <light-timeline :items='items'>
         <template slot='tag' slot-scope='{ item }' >
-          <div class="tagText">{{item.date}}</div>
+          <div class="tagText">{{item.time}}</div>
         </template>
         <template slot='symbol' slot-scope='{ item }' >
           <transition name = "fade">
@@ -114,11 +114,6 @@
       //  console.log(this.$refs.content[num].parentNode.parentNode.children[1].firstChild)
       }
     },
-    watch: {
-      contentStyle() {
-        console.log(this.contentStyle);
-      }
-    },
     destroyed () {
       window.removeEventListener('scroll', this.styleScroll)
     }
@@ -136,7 +131,7 @@
     text-align: left;
   }
   .mytimeline {
-    margin-top: 50px;
+   /* margin-top: 50px;*/
   }
   .line-container::after {
     position: absolute;
@@ -183,10 +178,10 @@
   }
 
   .tagText {
-    font-size: 17px;
+    font-size: 18px;
     width: 90px;
     margin-top: 12px;
-    margin-left: -25px;
+    margin-left: -20px;
     color: azure;
   }
   .item-circle {
@@ -197,7 +192,7 @@
     height: 16px;
     border-radius: 10px;
     background: azure !important;
-    border: 4px solid #151d31 !important;
+    border: 4px solid #32343a !important;
     margin-top: 15px;
   }
 

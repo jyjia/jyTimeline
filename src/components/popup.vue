@@ -88,7 +88,8 @@
   }
   .popup-body {
     position: relative;
-    padding: 20px 10px;
+    padding: 20px;
+    text-align: left;
   }
   .btn-close {
     border: none;
