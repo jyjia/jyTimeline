@@ -10,7 +10,7 @@
           </transition>
         </template>
         <template slot='content' slot-scope='{ item }'>
-          <div  v-for="text in item.detail" style="margin-top: 10px">
+          <div  v-for="text in item.detail" style="margin-top: 0.625rem ; width: 31.25rem">
             <div class="timeLineContent"
                  ref="content"
                  :class="[text.typeColor,{'noShow':text.isShow}]"
@@ -122,12 +122,12 @@
 <style scoped>
   .timeLineContent{
    /* left: 120px;*/
-    padding: 8px;
-    font-size: 17px;
+    padding: 0.5rem;
+    font-size: 1rem;
     color:#fff;
-    border-radius: 5px;
+    border-radius: 0.3125rem;
     display: table-cell;
-    max-width: 400px;
+    max-width: 25rem;
     text-align: left;
   }
   .mytimeline {
@@ -138,15 +138,15 @@
     content: "";
     left: 5rem;
     top: 0;
-    width: 2px;
+    width: 0.125rem;
     height: 100%;
     background-color: #e4e1fe;
   }
   .icon-important {
-    width: 18px;
-    height: 18px;
+    width: 1.125rem;
+    height: 1.125rem;
     vertical-align: top;
-    margin-top: -10px;
+    margin-top: -0.625rem;
   }
   .icon-video {
     width: 1.3em;
@@ -154,7 +154,7 @@
     vertical-align: bottom;
   }
   .item-symbol {
-    bottom: 10px;
+    bottom: 0.625rem;
   }
   .enLarge {
     transform: scale(1.1);
@@ -178,22 +178,22 @@
   }
 
   .tagText {
-    font-size: 18px;
-    width: 90px;
-    margin-top: 12px;
-    margin-left: -20px;
+    font-size: 1.125rem;
+    width: 5.625rem;
+    margin-top: 0.75rem;
+    margin-left: -1.25rem;
     color: azure;
   }
   .item-circle {
     box-sizing: border-box;
     position: absolute;
-    margin-left: -7px;
-    width: 16px;
-    height: 16px;
-    border-radius: 10px;
+    margin-left: -0.4375rem;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 0.625rem;
     background: azure !important;
-    border: 4px solid #32343a !important;
-    margin-top: 15px;
+    border: 0.25rem solid #32343a !important;
+    margin-top: 0.9375rem;
   }
 
   .noShow {

@@ -108,28 +108,28 @@
   }
   .popup {
     background: #FFFFFF;
-    box-shadow: 2px 2px 20px 1px;
+    box-shadow: 0.125rem 0.125rem 1.25rem 0.0625rem;
     overflow-x: auto;
     display: flex;
     flex-direction: column;
-    width: 40%;
+  /*  width: 40%;*/
   }
   .popup-footer{
-    padding: 10px 25px;
+    padding: 0.625rem 1.5625rem;
     display: flex;
   }
   .popup-footer {
-    border-top: 1px solid #eeeeee;
+    border-top: 0.0625rem solid #eeeeee;
     justify-content: flex-end;
   }
   .popup-body {
     position: relative;
-    padding: 50px 50px;
+    padding: 3.125rem 3.125rem;
   }
   .btn-close {
     border: none;
-    font-size: 20px;
-    padding: 20px;
+    font-size: 1.25rem;
+    padding: 1.25rem;
     cursor: pointer;
     font-weight: bold;
     color:  #151d31;;
@@ -137,10 +137,10 @@
   }
   .btn-green {
     color: white;
-    font-size: 13px;
-    padding: 5px 10px;
+    font-size: 0.8125rem;
+    padding: 0.3125rem 0.625rem;
     background:  #151d31;
-    border: 1px solid  #151d31;
-    border-radius: 2px;
+    border: 0.0625rem solid  #151d31;
+    border-radius: 0.125rem;
   }
 </style>

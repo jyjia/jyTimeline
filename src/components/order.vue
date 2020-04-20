@@ -41,16 +41,16 @@
   }
   .normal  {
     float: right;
-    border: 1px solid white;
-    border-radius: 5px;
-    padding: 5px;
-    margin-right: 20px;
+    border: 0.0625rem solid white;
+    border-radius: 0.3125rem;
+    padding: 0.3125rem;
+    margin-right: 1.25rem;
   }
   .reverse {
     float: right;
-    border: 1px solid white;
-    border-radius: 5px;
-    padding: 5px;
+    border: 0.0625rem solid white;
+    border-radius: 0.3125rem;
+    padding: 0.3125rem;
   }
   .disabled {
     opacity: .2;

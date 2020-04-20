@@ -34,7 +34,7 @@ time, mark, audio, video {
   margin: 0;
   padding: 0;
   border: 0;
-  font-size: 100%;
+ /* font-size: 100%;*/
   font: inherit;
   vertical-align: baseline;
 }
@@ -46,5 +46,29 @@ footer, header, hgroup, menu, nav, section {
   html {
     background-color: #151d31;
   }
+  #app {
+    margin: 0 auto;
+    max-width: 650px;
+  }
+
+
+@media screen and (min-width:360px) and (max-width:374px) and (orientation:portrait) {
+  html { font-size: 20px; }
+}
+/*@media screen and (min-width:375px) and (max-width:383px) and (orientation:portrait) {
+  html { font-size: 20px; }
+}
+@media screen and (min-width:384px) and (max-width:399px) and (orientation:portrait) {
+  html { font-size: ; }
+}
+@media screen and (min-width:400px) and (max-width:413px) and (orientation:portrait) {
+  html { font-size: ; }
+}
+@media screen and (min-width:414px) and (max-width:431px) and (orientation:portrait){
+  html { font-size: ; }
+}
+@media screen and (min-width:432px) and (max-width:479px) and (orientation:portrait){
+  html { font-size: ; }
+}*/
 
 </style>

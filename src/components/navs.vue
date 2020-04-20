@@ -1,5 +1,5 @@
 <template>
-  <ul class="navs">
+  <ul  class="navs" :class="{fixedBar: isFixed}">
     <li>点击筛选 ：</li>
     <li v-for="item in navsList" class="check"
         :class="item.class"
@@ -14,6 +14,7 @@
     name: "navs",
     data() {
       return {
+        isFixed: false,
         isCheck: [true,true,true,true],
         navsList: [
           {
@@ -39,6 +40,11 @@
         ],
         checkList: ['政府行动','境内疫情','行业战疫','境外疫情']
       }
+    },
+    mounted(){
+      this.$nextTick(function () {  //监听滚动事件
+        window.addEventListener('scroll', this.navsScroll)
+      })
     },
     watch:{
       checkList(){
@@ -68,6 +74,12 @@
           this.checked(el,text);
           this.isCheck[id] = true;
         }
+      },
+      navsScroll() {
+        //固定筛选栏
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+        let offsetTop = document.querySelector('.navs').offsetTop;
+        scrollTop > offsetTop ? this.isFixed = true : this.isFixed = false
       }
     }
   }
@@ -76,12 +88,14 @@
 <style scoped>
   .navs{
     list-style: none;
-    margin:0;
-    padding:0;
+    padding: 0.75rem 1.125rem;
     color: azure;
+    background-color: #151d31;
+    display: flex;
+    justify-content: space-around;
   }
   .navs li {
-    margin: 0 10px;
+    /*margin: 0 0.625rem;*/
     display:inline-block;
   }
   .navs .check {
@@ -89,13 +103,13 @@
   }
   .navs .check:before {
     content: "";
-    width: 17px;
-    height: 17px;
+    width: 1.0625rem;
+    height: 1.0625rem;
     display: inline-block;
-    border-radius: 10px;
+    border-radius: 0.625rem;
     background: #fff;
     vertical-align: bottom;
-    margin-right: 10px;
+    margin-right: 0.625rem;
   }
   .navs .check.check0:before {
     background: #f77979;
@@ -123,5 +137,17 @@
   }
   .disabled {
     opacity: .2;
+  }
+  .fixedBar {
+    position: fixed;
+    top: 0;
+    z-index: 10;
+    width: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.625rem 1.125rem;
+    box-sizing: border-box;
+    background: #151d31;
+    max-width: 650px;
   }
 </style>
